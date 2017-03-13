@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Local Weather</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -13,19 +14,39 @@
       <h3 class="text-muted">Weather App</h3>
     </div>
     <div class="jumbotron">
-      <h1>City</h1>
+      <h1 name="city">City</h1>
       <div class="panel panel-info">
         <div class="panel-heading">
           <div class="panel-title">Current Weather</div>
         </div>
         <ul class="list-group">
-          <li class="list-group-item">Temperature: </li>
-          <li class="list-group-item">Forecast: </li>
-          <li class="list-group-item">icon</li>
+          <li class="list-group-item" name="temperature">Temperature: </li>
+          <li class="list-group-item" name="description">Description: </li>
+          <li class="list-group-item" name="icon">icon</li>
         </ul>
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function(){
+      // console.log("ready");
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(a){
+            console.log(a.coords.latitude.toFixed(2) + " " + a.coords.longitude.toFixed(2));
+            $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' +
+            a.coords.latitude.toFixed(2) + '&lon=' + a.coords.longitude.toFixed(2) + '&appid=eb8a8d4e5d2fa275ae6179f07b373ac7',
+            function(the){
+              $('h1[name="city"]').text(the.name);
+              $('li[name="temperature"]').text(the.main.temp + 'ºF');
+              $('li[name="description"]').text(the.weather[0].description);
+              console.log(the)
+            });
+          });
+      } else {
+          console.log("Geolocation is not supported by this browser.");
+      }
+    });
+  </script>
 
 </body>
 </html>
