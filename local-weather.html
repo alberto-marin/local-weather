@@ -7,6 +7,7 @@
   <title>Local Weather</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="container">
@@ -20,32 +21,46 @@
           <div class="panel-title">Current Weather</div>
         </div>
         <ul class="list-group">
-          <li class="list-group-item" name="temperature">Temperature: </li>
-          <li class="list-group-item" name="description">Description: </li>
+          <li class="list-group-item" name="temperature"></li>
+          <li class="list-group-item" name="description"></li>
           <li class="list-group-item" name="icon">icon</li>
         </ul>
       </div>
+      <p><button class="btn btn-primary disabled" type="button" data-toggle="button">Temperature Scale</button></p>
     </div>
   </div>
   <script>
     $(document).ready(function(){
       // console.log("ready");
       if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(a){
-            console.log(a.coords.latitude.toFixed(2) + " " + a.coords.longitude.toFixed(2));
-            $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' +
-            a.coords.latitude.toFixed(2) + '&lon=' + a.coords.longitude.toFixed(2) + '&appid=eb8a8d4e5d2fa275ae6179f07b373ac7',
-            function(the){
-              $('h1[name="city"]').text(the.name);
-              $('li[name="temperature"]').text(the.main.temp + 'ºF');
+        navigator.geolocation.getCurrentPosition(
+          function(a) {
+            $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=' + a.coords.latitude.toFixed(2) + '&lon=' + a.coords.longitude.toFixed(2) + '&appid=eb8a8d4e5d2fa275ae6179f07b373ac7',
+            function(the) {
+              // TEMPERATURES
+              var celsius = ( (the.main.temp - 273.15).toFixed(2) ) + 'º C';
+              var fahrenheit = ( ((9 * (the.main.temp - 273.15))/5 + 32).toFixed(2) ) + 'º F';
+
+              $('h1').text(the.name); // NAME of the city
+              $('li:first').text(fahrenheit); // Default temperature in fahrenheits
               $('li[name="description"]').text(the.weather[0].description);
-              console.log(the)
-            });
-          });
-      } else {
-          console.log("Geolocation is not supported by this browser.");
-      }
-    });
+
+              // Toggle temperature scale
+              $('button').removeClass('disabled').addClass('active');
+              var flag = true;
+              $('button').click(function(){
+                if (flag === true) {
+                  $('li:first').replaceWith('<li class="list-group-item" name="temperature">' + celsius + '</li>');
+                  flag = false;
+                } else if (flag === false) {
+                  $('li:first').replaceWith('<li class="list-group-item" name="temperature">' + fahrenheit + '</li>');
+                  flag = true;
+                }
+              });//click
+            }); //getJSON
+          }); //getCurrentPosition
+        } else { $('h1').text("Geolocation is not supported by this browser."); }
+      }); //ready
   </script>
 
 </body>
