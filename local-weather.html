@@ -51,30 +51,32 @@
               $('li:first').text(fahrenheit); // Default temperature in fahrenheits
               $('li:nth-child(2)').text(the.weather[0].description);
               // Switch icon
+              var liIconInit = '<li class="list-group-item" name="icon"><i class="wi wi-';
+              var liIconEnd = ' grande"></i></li>';
               switch (the.weather[0].main) {
                 case 'Clouds':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-cloud grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'cloud' + liIconEnd);
                   break;
                 case 'Thunderstorm':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-thunderstom grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'thunderstom' + liIconEnd);
                   break;
                 case 'Drizzle':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-showers grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'showers' + liIconEnd);
                   break;
                 case 'Rain':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-rain grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'rain' + liIconEnd);
                   break;
                 case 'Snow':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-snow grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'snow' + liIconEnd);
                   break;
                 case 'Clear':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-day-sunny grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'day-sunny' + liIconEnd);
                   break;
                 case 'Extreme':
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-alien grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'alien' + liIconEnd);
                   break;
                 default:
-                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-na grande"></i></li>');
+                  $('li:last').replaceWith(liIconInit + 'na' + liIconEnd);
                   break;
               }
               // Toggle temperature scale
