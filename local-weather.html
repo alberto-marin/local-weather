@@ -6,24 +6,30 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Local Weather</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/weather-icons.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <style media="screen">
+    .short { font-size: .8em; }
+    .tall { font-size: 1.5em; }
+    .grande { font-size: 2em; }
+  </style>
 </head>
 <body>
   <div class="container">
     <div class="header clearfix">
       <h3 class="text-muted">Weather App</h3>
     </div>
-    <div class="jumbotron">
+    <div class="jumbotron text-center">
       <h1 name="city">City</h1>
       <div class="panel panel-info">
         <div class="panel-heading">
           <div class="panel-title">Current Weather</div>
         </div>
         <ul class="list-group">
-          <li class="list-group-item" name="temperature"></li>
-          <li class="list-group-item" name="description"></li>
-          <li class="list-group-item" name="icon">icon</li>
+          <li class="list-group-item tall" name="temperature"></li>
+          <li class="list-group-item tall" name="description"></li>
+          <li class="list-group-item" name="icon"></li>
         </ul>
       </div>
       <p><button class="btn btn-primary disabled" type="button" data-toggle="button">Temperature Scale</button></p>
@@ -43,17 +49,43 @@
 
               $('h1').text(the.name); // NAME of the city
               $('li:first').text(fahrenheit); // Default temperature in fahrenheits
-              $('li[name="description"]').text(the.weather[0].description);
-
+              $('li:nth-child(2)').text(the.weather[0].description);
+              // Switch icon
+              switch (the.weather[0].main) {
+                case 'Clouds':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-cloud grande"></i></li>');
+                  break;
+                case 'Thunderstorm':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-thunderstom grande"></i></li>');
+                  break;
+                case 'Drizzle':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-showers grande"></i></li>');
+                  break;
+                case 'Rain':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-rain grande"></i></li>');
+                  break;
+                case 'Snow':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-snow grande"></i></li>');
+                  break;
+                case 'Clear':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-day-sunny grande"></i></li>');
+                  break;
+                case 'Extreme':
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-alien grande"></i></li>');
+                  break;
+                default:
+                  $('li:last').replaceWith('<li class="list-group-item" name="icon"><i class="wi wi-na grande"></i></li>');
+                  break;
+              }
               // Toggle temperature scale
               $('button').removeClass('disabled').addClass('active');
               var flag = true;
               $('button').click(function(){
                 if (flag === true) {
-                  $('li:first').replaceWith('<li class="list-group-item" name="temperature">' + celsius + '</li>');
+                  $('li:first').replaceWith('<li class="list-group-item tall" name="temperature">' + celsius + '</li>');
                   flag = false;
                 } else if (flag === false) {
-                  $('li:first').replaceWith('<li class="list-group-item" name="temperature">' + fahrenheit + '</li>');
+                  $('li:first').replaceWith('<li class="list-group-item tall" name="temperature">' + fahrenheit + '</li>');
                   flag = true;
                 }
               });//click
